@@ -1,5 +1,6 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -62,9 +63,28 @@ public class FindElements {
         driver.navigate().back();
         driver.findElement(By.xpath("//*[@id=\"PageList2\"]/div/div[1]/div[1]/div/ul/li[4]/a")).click();
         String testTitle = driver.getTitle();
-        System.out.println("1 - TestNG: " + testTitle);
+        System.out.println("4 - TestNG: " + testTitle);
         System.out.println(driver.findElement(By.xpath("//*[@id=\"post-body-4680314448799285253\"]")).getText());
     }
+    @Test
+    public void menulinks3(){
+        driver.manage().window().maximize();
+        driver.get("https://www.amazon.in");
+        for (int i=1; i<16;i++){
+            driver.findElement(By.xpath("//*[@id=\"nav-xshop\"]/a[" + i + "]")).click();
+            System.out.println(i + ": " + driver.getTitle());
+            for (int j=1; j<6;j++){
+                try {
+                    System.out.println(i + ": " + j + ": " +  driver.findElement(By.xpath("//*/h"+ j )).getText());
+                }
+                catch (NoSuchElementException ex){
+                    System.out.println(i + ": " + j  + ": element not found !");
+                }
+            }
+                driver.navigate().back();
+        }
+    }
+
     @AfterMethod
     public void tearDown(){
         driver.close();
